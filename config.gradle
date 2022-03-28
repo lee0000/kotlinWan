@@ -1,0 +1,10 @@
+ext {
+
+    leakcanary = [
+            version : "com.squareup.leakcanary:leakcanary-android:2.8.1"
+    ]
+
+    utilcodex = [
+            version: "com.blankj:utilcodex:1.31.0"
+    ]
+}

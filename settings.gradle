@@ -3,8 +3,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
+
+        mavenLocal()
     }
 }
 rootProject.name = "WanKotlin"
 include ':app'
+include ':thirdpart_library'
