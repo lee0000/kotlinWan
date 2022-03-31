@@ -7,4 +7,9 @@ ext {
     utilcodex = [
             version: "com.blankj:utilcodex:1.31.0"
     ]
+
+    navigation = [
+            version: "androidx.navigation:navigation-fragment:2.3.5"
+    ]
+
 }

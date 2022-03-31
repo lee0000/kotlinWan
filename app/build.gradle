@@ -34,6 +34,13 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    //启用DataBinding
+    buildFeatures {
+        dataBinding true
+    }
+
+    resourcePrefix "wan"
 }
 
 dependencies {
@@ -46,9 +53,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-//    implementation project(':thirdpart_library')
+    implementation project(':thirdpart_library')
 //    implementation("com.lee.thirdpard:library:1.0.0-SNAPSHOT"){
 //        transitive(true)
 //    }
-    implementation 'com.lee0000.thirdpart:library:1.0.0'
+//    implementation 'com.lee0000.thirdpart:library:1.0.0'
 }

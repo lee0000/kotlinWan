@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home_fragment"
+        android:icon="@drawable/wan_icon_home"
+        android:title="首页" />
+
+    <item
+        android:id="@+id/public_fragment"
+        android:icon="@drawable/wan_icon_map"
+        android:title="公众号" />
+
+</menu>

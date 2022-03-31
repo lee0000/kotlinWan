@@ -45,6 +45,8 @@ dependencies {
     debugApi "${rootProject.ext.leakcanary.version}"
     // 工具类
     api "${rootProject.ext.utilcodex.version}"
+    // navigation依赖 ui 和 fragment
+    api "${rootProject.ext.navigation.version}"
 
 }
 
