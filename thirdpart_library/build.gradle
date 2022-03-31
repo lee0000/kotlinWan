@@ -40,13 +40,24 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-
     // 泄漏检测
     debugApi "${rootProject.ext.leakcanary.version}"
     // 工具类
     api "${rootProject.ext.utilcodex.version}"
     // navigation依赖 ui 和 fragment
     api "${rootProject.ext.navigation.version}"
+    // gson
+    api "${rootProject.ext.gson.version}"
+    // glide
+    api "${rootProject.ext.glide.version}"
+    annotationProcessor "${rootProject.ext.glide.compiler}"
+    // retrofit
+    api "${rootProject.ext.retrofit.version}"
+    // 权限申请
+    api "${rootProject.ext.permission.version}"
+    // 友盟统计
+    api "${rootProject.ext.youmeng.version}"
+    api "${rootProject.ext.youmeng.asms}"
 
 }
 

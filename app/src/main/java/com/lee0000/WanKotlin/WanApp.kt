@@ -1,6 +1,7 @@
 package com.lee0000.WanKotlin
 
 import android.app.Application
+import com.umeng.commonsdk.UMConfigure
 
 /**
 author: Lee
@@ -10,5 +11,12 @@ class WanApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        initStatistics()
+    }
+
+    private fun initStatistics(){
+
+        UMConfigure.init(this, YM_KEY, "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "")
     }
 }
