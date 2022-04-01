@@ -58,6 +58,7 @@ dependencies {
     // 友盟统计
     api "${rootProject.ext.youmeng.version}"
     api "${rootProject.ext.youmeng.asms}"
+    api "${rootProject.ext.youmeng.apm}"
 
 }
 

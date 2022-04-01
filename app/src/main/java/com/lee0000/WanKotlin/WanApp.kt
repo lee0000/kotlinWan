@@ -17,6 +17,8 @@ class WanApp: Application() {
 
     private fun initStatistics(){
 
-        UMConfigure.init(this, YM_KEY, "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "")
+        UMConfigure.setLogEnabled(true)
+        UMConfigure.preInit(this, YM_KEY, "Official")
+        UMConfigure.init(this, YM_KEY, "Official", UMConfigure.DEVICE_TYPE_PHONE, "")
     }
 }
