@@ -53,8 +53,13 @@ dependencies {
     annotationProcessor "${rootProject.ext.glide.compiler}"
     // retrofit
     api "${rootProject.ext.retrofit.version}"
+    api "${rootProject.ext.retrofit.converter_gson}"
+    api "${rootProject.ext.retrofit.interceptor}"
+    api "${rootProject.ext.retrofit.okhttp3}"
     // 权限申请
     api "${rootProject.ext.permission.version}"
+    // 协程
+    api "${rootProject.ext.coroutines.version}"
     // 友盟统计
     api "${rootProject.ext.youmeng.version}"
     api "${rootProject.ext.youmeng.asms}"

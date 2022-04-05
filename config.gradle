@@ -22,11 +22,18 @@ ext {
     ]
 
     retrofit = [
-            version: "com.squareup.retrofit2:retrofit:2.9.0"
+            version: "com.squareup.retrofit2:retrofit:2.9.0",
+            converter_gson: "com.squareup.retrofit2:converter-gson:2.9.0",
+            interceptor: "com.squareup.okhttp3:logging-interceptor:4.9.0",
+            okhttp3: "com.squareup.okhttp3:okhttp:4.1.0"
     ]
 
     permission = [
             version: "com.github.getActivity:XXPermissions:13.5"
+    ]
+
+    coroutines = [
+            version: "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
     ]
 
     youmeng = [
