@@ -13,7 +13,7 @@ date:   2022/4/5
  */
 abstract class BaseRetrofitClient {
 
-    private val TIME_OUT = 5
+    private val TIME_OUT = 8
 
     private val client: OkHttpClient by lazy {
         val builder = OkHttpClient.Builder()

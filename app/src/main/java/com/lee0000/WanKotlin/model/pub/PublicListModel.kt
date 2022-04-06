@@ -1,4 +1,4 @@
-package com.lee0000.WanKotlin.model.public
+package com.lee0000.WanKotlin.model.pub
 
 /**
 author: Lee

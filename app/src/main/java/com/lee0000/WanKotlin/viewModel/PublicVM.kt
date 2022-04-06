@@ -1,22 +1,64 @@
 package com.lee0000.WanKotlin.viewModel
 
-import com.lee0000.WanKotlin.model.public.PublicTitleModel
-import com.lee0000.WanKotlin.net.api.ApiResponse
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.lee0000.WanKotlin.model.pub.PublicTitleModel
 import com.lee0000.WanKotlin.net.repository.PublicRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
 author: Lee
 date:   2022/4/5
  */
-class PublicVM: BaseViewModel() {
+class PublicVM : BaseViewModel() {
 
     private val repository by lazy { PublicRepository() }
 
-    private val _uiState = MutableStateFlow<ApiResponse<List<PublicTitleModel>>>(ApiResponse())
-    val uiState: StateFlow<ApiResponse<List<PublicTitleModel>>> = _uiState.asStateFlow()
+    private val _ptmUIState = MutableLiveData<PublicUiModel<PublicTitleModel>>()
+    val ptmUIState: LiveData<PublicUiModel<PublicTitleModel>> = _ptmUIState
 
-    
+//    private val _plmUIState = MutableStateFlow(blankUIState<PublicTitleModel>())
+//    val plmUIState: StateFlow<PublicUiModel<PublicTitleModel>> = _plmUIState.asStateFlow()
+
+    fun requestWxArticle() {
+
+        emitUiState(true, null, null, false, false)
+
+        viewModelScope.launch(Dispatchers.Default) {
+
+            val result = repository.fetchWxArticleTitle()
+            withContext(Dispatchers.Main){
+                if (result == null) {
+                    emitUiState(false, null, null, false, false)
+                } else {
+                    emitUiState(false, null, result, false, false)
+                }
+
+                emitUiState(false, null, null, true, false)
+
+            }
+        }
+    }
+
+    private fun emitUiState(
+        showLoading: Boolean = false,
+        showError: String? = null,
+        showSuccess: PublicTitleModel? = null,
+        showEnd: Boolean = false,
+        isRefresh: Boolean = false,
+    ) {
+        val uiModel = PublicUiModel(showLoading, showError, showSuccess, showEnd, isRefresh)
+        _ptmUIState.value = uiModel
+    }
+
+    data class PublicUiModel<T>(
+        val showLoading: Boolean,
+        val showError: String?,
+        val showSuccess: T?,
+        val showEnd: Boolean, // 加载更多
+        val isRefresh: Boolean, // 刷新
+    )
 }

@@ -20,6 +20,13 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/wan_theme_color">
 
+            <ImageView
+                android:id="@+id/iv_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:src="@drawable/wan_icon_menu" />
+
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
@@ -33,12 +40,11 @@
         <!--NavHost-->
         <fragment
             android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:name="com.lee0000.WanKotlin.widget.navigation.NavHostFragmentHideShow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/bottom_navigation"
-            android:layout_below="@+id/toolbar"
-            app:navGraph="@navigation/wan_nav_graph" />
+            android:layout_below="@+id/toolbar"/>
 
         <!--底部导航-->
         <com.google.android.material.bottomnavigation.BottomNavigationView

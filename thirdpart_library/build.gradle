@@ -2,6 +2,8 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'maven-publish'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -46,6 +48,7 @@ dependencies {
     api "${rootProject.ext.utilcodex.version}"
     // navigation依赖 ui 和 fragment
     api "${rootProject.ext.navigation.version}"
+    api "${rootProject.ext.navigation.ui}"
     // gson
     api "${rootProject.ext.gson.version}"
     // glide
@@ -64,7 +67,10 @@ dependencies {
     api "${rootProject.ext.youmeng.version}"
     api "${rootProject.ext.youmeng.asms}"
     api "${rootProject.ext.youmeng.apm}"
-
+    // viewModel
+    api "${rootProject.ext.viewModel.version}"
+    // fragment-ktx
+    api "${rootProject.ext.fragment_ktx.version}"
 }
 
 // 声明aar包的版本号
