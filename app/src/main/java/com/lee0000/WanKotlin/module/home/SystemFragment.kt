@@ -7,10 +7,10 @@ import com.lee0000.WanKotlin.module.base.BaseFragment
 author: Lee
 date:   2022/4/7
  */
-class HomeFragment: BaseFragment() {
+class SystemFragment: BaseFragment() {
 
     override fun getLayoutResId(): Int {
-        return R.layout.wan_fragment_home
+        return R.layout.wan_fragment_system
     }
 
     override fun initView() {

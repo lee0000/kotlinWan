@@ -71,6 +71,8 @@ dependencies {
     api "${rootProject.ext.viewModel.version}"
     // fragment-ktx
     api "${rootProject.ext.fragment_ktx.version}"
+    // BaseRecyclerViewAdapterHelper
+    api "${rootProject.ext.adapterHelper.version}"
 }
 
 // 声明aar包的版本号

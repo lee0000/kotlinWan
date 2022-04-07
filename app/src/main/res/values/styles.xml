@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="wan_tabTextStyle" parent="TextAppearance.Design.Tab" tools:ignore="ResourceName">
+        <item name="textAllCaps">false</item>
+    </style>
+
+</resources>

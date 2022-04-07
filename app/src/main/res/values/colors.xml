@@ -14,5 +14,7 @@
     <color name="wan_bnv_bg_color">@color/white</color><!--BottomNavigationView 背景颜色 文字、下划线颜色-->
     <color name="wan_green">#2EAD4D</color>
     <color name="wan_bnv_check_color">#666666</color>
+    <color name="wan_sub_article_text_color">#8e9dac</color>
+    <color name="wan_article_text_color">#1c1c1e</color>
 
 </resources>

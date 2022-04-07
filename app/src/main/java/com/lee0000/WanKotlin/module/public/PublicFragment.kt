@@ -27,9 +27,8 @@ class PublicFragment : BaseFragment() {
 
     override fun initData() {
 
+        // title
         publicVM.requestWxArticle()
-
-
         publicVM.ptmUIState.observe(viewLifecycleOwner) {
             if (it.isRefresh) {
 
@@ -44,5 +43,12 @@ class PublicFragment : BaseFragment() {
             }
 
         }
+
+        // list
+        publicVM.requestWxArticleList()
+        publicVM.plmUIState.observe(viewLifecycleOwner){
+
+        }
+
     }
 }

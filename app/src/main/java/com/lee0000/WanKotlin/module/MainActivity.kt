@@ -8,7 +8,7 @@ import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.wan_activity_main.*
 import kotlin.system.exitProcess
 import com.lee0000.WanKotlin.R
-import com.lee0000.WanKotlin.module.home.HomeFragment
+import com.lee0000.WanKotlin.module.home.MainFragment
 import com.lee0000.WanKotlin.module.public.PublicFragment
 import com.lee0000.WanKotlin.widget.navigation.FragmentNavigatorHideShow
 
@@ -65,7 +65,7 @@ class MainActivity: BaseActivity() {
         //用自定义的导航器来创建目的地
         val destination1 = fragmentNavigator.createDestination()
         destination1.id = R.id.home_fragment
-        destination1.className = HomeFragment::class.java.canonicalName
+        destination1.className = MainFragment::class.java.canonicalName
         navGraph.addDestination(destination1)
 
         val destination2 = fragmentNavigator.createDestination()
