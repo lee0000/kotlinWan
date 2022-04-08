@@ -1,5 +1,8 @@
 package com.lee0000.WanKotlin.model.home
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.lee0000.WanKotlin.HOME_HOTLIST_TYPE
+
 /**
 author: Lee
 date:   2022/4/2
@@ -9,7 +12,7 @@ data class HomeTopListModel(
     val data : List<Data>,
     val errorCode: Int,
     val errorMsg: String
-){
+) {
     data class Data(
         val apkLink: String,
         val audit: Int,
@@ -44,7 +47,10 @@ data class HomeTopListModel(
         val userId: Int,
         val visible: Int,
         val zan: Int
-    )
+    ) : MultiItemEntity{
+        override val itemType: Int
+            get() = HOME_HOTLIST_TYPE
+    }
 
     data class Tag(
         val name: String,

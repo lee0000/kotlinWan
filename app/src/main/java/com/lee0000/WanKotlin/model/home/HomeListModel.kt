@@ -1,5 +1,9 @@
 package com.lee0000.WanKotlin.model.home
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.lee0000.WanKotlin.HOME_BANNER_TYPE
+import com.lee0000.WanKotlin.HOME_LIST_TYPE
+
 /**
 author: Lee
 date:   2022/4/2
@@ -9,7 +13,7 @@ data class HomeListModel(
     val data : Data,
     val errorCode: Int,
     val errorMsg: String
-){
+): MultiItemEntity {
     data class Data(
         val curPage: Int,
         val datas: List<DataX>,
@@ -60,4 +64,7 @@ data class HomeListModel(
         val name: String,
         val url: String
     )
+
+    override val itemType: Int
+        get() = HOME_LIST_TYPE
 }

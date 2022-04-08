@@ -20,27 +20,27 @@ class PublicVM : BaseViewModel() {
 
     private val repository by lazy { PublicRepository() }
 
-    private val _ptmUIState = MutableLiveData<PublicUiModel<PublicTitleModel>>()
-    val ptmUIState: LiveData<PublicUiModel<PublicTitleModel>> = _ptmUIState
+    private val _ptmUIState = MutableLiveData<UiStateModel<PublicTitleModel>>()
+    val ptmUIState: LiveData<UiStateModel<PublicTitleModel>> = _ptmUIState
 
-    private val _plmUIState = MutableLiveData<PublicUiModel<PublicListModel>>()
-    val plmUIState: LiveData<PublicUiModel<PublicListModel>> = _plmUIState
+    private val _plmUIState = MutableLiveData<UiStateModel<PublicListModel>>()
+    val plmUIState: LiveData<UiStateModel<PublicListModel>> = _plmUIState
 
     fun requestWxArticle() {
 
-        emitUiState(true, null, null, false, false)
+        emitUiState(_ptmUIState,true, null, null, false, false)
 
         viewModelScope.launch(Dispatchers.Default) {
 
             val result = repository.fetchWxArticleTitle()
             withContext(Dispatchers.Main){
                 if (result == null) {
-                    emitUiState(false, null, null, false, false)
+                    emitUiState(_ptmUIState,false, null, null, false, false)
                 } else {
-                    emitUiState(false, null, result, false, false)
+                    emitUiState(_ptmUIState,false, null, result, false, false)
                 }
 
-                emitUiState(false, null, null, true, false)
+                emitUiState(_ptmUIState, false, null, null, true, false)
 
             }
         }
@@ -63,23 +63,4 @@ class PublicVM : BaseViewModel() {
 //            }
 //        }
     }
-
-    private fun emitUiState(
-        showLoading: Boolean = false,
-        showError: String? = null,
-        showSuccess: PublicTitleModel? = null,
-        showEnd: Boolean = false,
-        isRefresh: Boolean = false,
-    ) {
-        val uiModel = PublicUiModel(showLoading, showError, showSuccess, showEnd, isRefresh)
-        _ptmUIState.value = uiModel
-    }
-
-    data class PublicUiModel<T>(
-        val showLoading: Boolean,
-        val showError: String?,
-        val showSuccess: T?,
-        val showEnd: Boolean, // 加载更多
-        val isRefresh: Boolean, // 刷新
-    )
 }
