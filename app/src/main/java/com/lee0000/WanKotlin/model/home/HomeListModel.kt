@@ -13,7 +13,7 @@ data class HomeListModel(
     val data : Data,
     val errorCode: Int,
     val errorMsg: String
-): MultiItemEntity {
+) {
     data class Data(
         val curPage: Int,
         val datas: List<DataX>,
@@ -58,13 +58,15 @@ data class HomeListModel(
         val userId: Int,
         val visible: Int,
         val zan: Int
-    )
+    ): MultiItemEntity{
+
+        override val itemType: Int
+            get() = HOME_LIST_TYPE
+    }
 
     data class Tag(
         val name: String,
         val url: String
     )
 
-    override val itemType: Int
-        get() = HOME_LIST_TYPE
 }

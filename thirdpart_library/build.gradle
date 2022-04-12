@@ -73,6 +73,8 @@ dependencies {
     api "${rootProject.ext.fragment_ktx.version}"
     // BaseRecyclerViewAdapterHelper
     api "${rootProject.ext.adapterHelper.version}"
+    // banner
+    api "${rootProject.ext.banner.version}"
 }
 
 // 声明aar包的版本号
