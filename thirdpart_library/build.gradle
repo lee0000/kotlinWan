@@ -75,6 +75,12 @@ dependencies {
     api "${rootProject.ext.adapterHelper.version}"
     // banner
     api "${rootProject.ext.banner.version}"
+    // swiperefreshlayout
+    api "${rootProject.ext.smartRefreshLayout.version}"
+    api "${rootProject.ext.smartRefreshLayout.h_classics}"
+    api "${rootProject.ext.smartRefreshLayout.f_classics}"
+    // TBS WebView
+    api "${rootProject.ext.tbsWebView.version}"
 }
 
 // 声明aar包的版本号

@@ -1,12 +1,8 @@
 package com.lee0000.WanKotlin.viewModel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.lee0000.WanKotlin.model.home.HomeAllModel
-import com.lee0000.WanKotlin.model.home.HomeBannerModel
-import com.lee0000.WanKotlin.model.home.HomeListModel
-import com.lee0000.WanKotlin.model.home.HomeTopListModel
+import androidx.lifecycle.*
+import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.lee0000.WanKotlin.model.home.*
 import com.lee0000.WanKotlin.net.api.RetrofitClient
 import kotlinx.coroutines.*
 
@@ -14,10 +10,30 @@ import kotlinx.coroutines.*
 author: Lee
 date:   2022/4/5
  */
-class HomeVM: BaseViewModel() {
+class HomeVM: BaseViewModel(), LifecycleObserver{
 
+    private var homeAllModel: HomeAllModel? = null
+
+    val entities = arrayListOf<MultiItemEntity>()
+
+    // 首页
     private val _halUIState = MutableLiveData<UiStateModel<HomeAllModel>>()
     val halUIState: LiveData<UiStateModel<HomeAllModel>> = _halUIState
+
+    // 首页-体系Title
+    private val _hstUIState = MutableLiveData<UiStateModel<SystemTitleModel>>()
+    val hstUIState: LiveData<UiStateModel<SystemTitleModel>> = _hstUIState
+
+    // 首页-体系List
+    private val _hslUIState = MutableLiveData<UiStateModel<SystemListModel>>()
+    val hslUIState: LiveData<UiStateModel<SystemListModel>> = _hslUIState
+
+    // 首页-导航
+    private val _hnlUIState = MutableLiveData<UiStateModel<NaviListModel>>()
+    val hnlUIState: LiveData<UiStateModel<NaviListModel>> = _hnlUIState
+
+    // 首页列表page
+    var homeListCurPage: Int = 0
 
     private val mService by lazy {
         RetrofitClient.service
@@ -31,10 +47,10 @@ class HomeVM: BaseViewModel() {
         object HomeList: ArticleType()
         object SystemTitle: ArticleType()
         object SystemList: ArticleType()
-        object navigationList: ArticleType()
+        object NavigationList: ArticleType()
     }
 
-    fun getArticleList(articleType: ArticleType, isRefresh: Boolean){
+    fun getArticleList(articleType: ArticleType, isRefresh: Boolean = false, cid: Int = 0){
 
         when(articleType){
 
@@ -45,19 +61,19 @@ class HomeVM: BaseViewModel() {
                 getHomeTopList()
             }
             ArticleType.HomeList -> {
-                getHomeList()
+                getHomeList(isRefresh)
             }
             ArticleType.HomeAll -> {
-                getHomeAll()
+                getHomeAll(isRefresh)
             }
             ArticleType.SystemTitle -> {
-
+                getSystemTitle()
             }
             ArticleType.SystemList -> {
-
+                getSystemList(cid)
             }
-            ArticleType.navigationList -> {
-
+            ArticleType.NavigationList -> {
+                getNavigationList()
             }
         }
     }
@@ -76,22 +92,62 @@ class HomeVM: BaseViewModel() {
         }
     }
 
-    private fun getHomeList(): Deferred<HomeListModel> {
+    private fun getHomeList(isRefresh: Boolean): Deferred<HomeListModel> {
 
         return viewModelScope.async{
-            mService.getHomeList(0)
+            if (isRefresh){
+                homeListCurPage = 0
+                mService.getHomeList(homeListCurPage)
+            }else{
+                homeListCurPage++
+                mService.getHomeList(homeListCurPage)
+            }
         }
     }
 
-    private fun getHomeAll(){
+    private fun getHomeAll(isRefresh: Boolean){
 
         viewModelScope.launch {
-            val banner = getHomeBanner().await()
-            val homeTopList = getHomeTopList().await()
-            val homeList = getHomeList().await()
 
-            val homeAllModel = HomeAllModel(banner, homeTopList, homeList)
-            emitUiState(_halUIState, false, null, homeAllModel, false, false)
+            if (isRefresh){
+                val banner = getHomeBanner().await()
+                val homeTopList = getHomeTopList().await()
+                val homeList = getHomeList(isRefresh).await()
+
+                entities.clear()
+                entities.addAll(homeTopList.data)
+                entities.addAll(homeList.data.datas)
+
+                homeAllModel = HomeAllModel(banner, entities)
+
+            }else{
+                val nextHomeList = getHomeList(isRefresh).await()
+                homeAllModel?.normalList!!.addAll(nextHomeList.data.datas)
+            }
+            emitUiState(_halUIState, false, null, homeAllModel, false, isRefresh)
+        }
+    }
+
+    private fun getSystemTitle(){
+
+        viewModelScope.launch {
+            val systemTitleModel = mService.getSystem()
+            emitUiState(_hstUIState, false, null, systemTitleModel, false, false)
+        }
+    }
+
+    private fun getSystemList(cid: Int){
+        viewModelScope.launch {
+            val systemListModel = mService.getSystemList(cid, 0)
+            emitUiState(_hslUIState, false, null, systemListModel, false, false)
+        }
+    }
+
+    private fun getNavigationList(){
+
+        viewModelScope.launch {
+            val naviListModel = mService.getNaviList()
+            emitUiState(_hnlUIState, false, null, naviListModel, false, false)
         }
     }
 }

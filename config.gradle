@@ -58,4 +58,14 @@ ext {
     banner = [
             version: "io.github.youth5201314:banner:2.2.2"
     ]
+
+    smartRefreshLayout = [
+            version: "io.github.scwang90:refresh-layout-kernel:2.0.5",
+            h_classics: "io.github.scwang90:refresh-header-classics:2.0.5",
+            f_classics: "io.github.scwang90:refresh-footer-classics:2.0.5"
+    ]
+
+    tbsWebView = [
+            version: "com.tencent.tbs:tbssdk:44181"
+    ]
 }

@@ -1,5 +1,6 @@
 package com.lee0000.WanKotlin.module.home
 
+import android.util.Log
 import com.blankj.utilcode.util.TimeUtils
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -43,7 +44,7 @@ class HomeAdapter(data: MutableList<MultiItemEntity>?): BaseMultiItemQuickAdapte
                 holder.setText(R.id.tv_group, listModel.superChapterName +"/"+listModel.chapterName)
                 holder.setText(R.id.tv_author, listModel.author)
                 holder.setText(R.id.tv_title, listModel.title)
-                holder.setText(R.id.tv_time, listModel.publishTime.toString())
+                holder.setText(R.id.tv_time, TimeUtils.getFriendlyTimeSpanByNow(listModel.publishTime))
             }
         }
     }

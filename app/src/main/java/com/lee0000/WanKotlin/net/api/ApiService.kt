@@ -53,5 +53,5 @@ interface ApiService {
     suspend fun getSystem(): SystemTitleModel
 
     @GET("article/list/{page}/json?cid={cid}")
-    suspend fun getSystemList(@Path("cid") cid: Int, @Path("page") page: Int): HomeListModel
+    suspend fun getSystemList(@Path("cid") cid: Int, @Path("page") page: Int): SystemListModel
 }

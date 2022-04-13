@@ -16,7 +16,7 @@ data class HomeListModel(
 ) {
     data class Data(
         val curPage: Int,
-        val datas: List<DataX>,
+        val datas: ArrayList<DataX>,
         val offset: Int,
         val over: Boolean,
         val pageCount: Int,
