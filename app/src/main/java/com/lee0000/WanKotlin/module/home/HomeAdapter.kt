@@ -1,6 +1,5 @@
 package com.lee0000.WanKotlin.module.home
 
-import android.util.Log
 import com.blankj.utilcode.util.TimeUtils
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder

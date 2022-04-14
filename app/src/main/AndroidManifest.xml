@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".module.web.WebActivity"
+            android:exported="true"/>
+
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"

@@ -1,12 +1,18 @@
 package com.lee0000.WanKotlin.module.home
 
+import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.lee0000.WanKotlin.R
 import com.lee0000.WanKotlin.model.home.HomeBannerModel
+import com.lee0000.WanKotlin.model.home.HomeListModel
+import com.lee0000.WanKotlin.model.home.HomeTopListModel
 import com.lee0000.WanKotlin.module.base.BaseFragment
+import com.lee0000.WanKotlin.module.web.WebActivity
+import com.lee0000.WanKotlin.util.IntentUtil
 import com.lee0000.WanKotlin.viewModel.HomeVM
 import com.lee0000.WanKotlin.widget.itemDecoration.SimpleDividerItemDecoration
 import com.scwang.smart.refresh.footer.ClassicsFooter
@@ -49,6 +55,7 @@ class HomeFragment: BaseFragment() {
         homeAdapter?.run {
             if (headerLayoutCount > 0) removeHeaderView(banner!!)
             addHeaderView(banner!!)
+            setOnItemClickListener(onItemClick())
         }
 
         refreshLayout.setRefreshHeader(ClassicsHeader(requireContext()))
@@ -89,4 +96,21 @@ class HomeFragment: BaseFragment() {
         homeVM.getArticleList(HomeVM.ArticleType.HomeAll, false)
     }
 
+    private fun onItemClick(): OnItemClickListener {
+
+        return OnItemClickListener { adapter, view, position ->
+
+            val clickItem = homeAdapter?.data?.get(position)
+            var linkUrl = ""
+            if (clickItem is HomeTopListModel.Data){
+                linkUrl = clickItem.link
+            }else if(clickItem is HomeListModel.DataX){
+                linkUrl = clickItem.link
+            }
+
+            val bundle = Bundle()
+            bundle.putString("url", linkUrl)
+            IntentUtil.navigate(requireContext(), WebActivity::class.java, bundle)
+        }
+    }
 }

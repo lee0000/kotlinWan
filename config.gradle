@@ -52,7 +52,7 @@ ext {
     ]
 
     adapterHelper = [
-            version: "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7"
+            version: "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4"
     ]
 
     banner = [
