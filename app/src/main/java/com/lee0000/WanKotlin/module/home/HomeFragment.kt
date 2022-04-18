@@ -66,6 +66,8 @@ class HomeFragment: BaseFragment() {
         refreshLayout.setOnLoadMoreListener {
             loadMore()
         }
+
+        scrollToTop(recyclerView, ib_top)
     }
 
     override fun initData() {

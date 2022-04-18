@@ -3,7 +3,7 @@ package com.lee0000.WanKotlin.viewModel
 import androidx.lifecycle.*
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.lee0000.WanKotlin.model.home.*
-import com.lee0000.WanKotlin.net.api.RetrofitClient
+import com.lee0000.WanKotlin.net.repository.HomeRepository
 import kotlinx.coroutines.*
 
 /**
@@ -35,9 +35,7 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
     // 首页列表page
     var homeListCurPage: Int = 0
 
-    private val mService by lazy {
-        RetrofitClient.service
-    }
+    private val homeRepository = HomeRepository()
 
     sealed class ArticleType{
 
@@ -81,14 +79,14 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
     private fun getHomeBanner(): Deferred<HomeBannerModel> {
 
         return viewModelScope.async {
-            mService.getHomeBanner()
+            homeRepository.fetchHomeBanner()
         }
     }
 
     private fun getHomeTopList(): Deferred<HomeTopListModel> {
 
         return viewModelScope.async {
-            mService.getHomeTopList()
+            homeRepository.fetchHomeTopList()
         }
     }
 
@@ -97,10 +95,10 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
         return viewModelScope.async{
             if (isRefresh){
                 homeListCurPage = 0
-                mService.getHomeList(homeListCurPage)
+                homeRepository.fetchHomeList(homeListCurPage)
             }else{
                 homeListCurPage++
-                mService.getHomeList(homeListCurPage)
+                homeRepository.fetchHomeList(homeListCurPage)
             }
         }
     }
@@ -131,14 +129,14 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
     private fun getSystemTitle(){
 
         viewModelScope.launch {
-            val systemTitleModel = mService.getSystem()
+            val systemTitleModel = homeRepository.fetchSystemTitle()
             emitUiState(_hstUIState, false, null, systemTitleModel, false, false)
         }
     }
 
     private fun getSystemList(cid: Int){
         viewModelScope.launch {
-            val systemListModel = mService.getSystemList(cid, 0)
+            val systemListModel = homeRepository.fetchSystemList(cid, 0)
             emitUiState(_hslUIState, false, null, systemListModel, false, false)
         }
     }
@@ -146,7 +144,7 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
     private fun getNavigationList(){
 
         viewModelScope.launch {
-            val naviListModel = mService.getNaviList()
+            val naviListModel = homeRepository.fetchNaviList()
             emitUiState(_hnlUIState, false, null, naviListModel, false, false)
         }
     }

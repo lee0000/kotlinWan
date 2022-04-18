@@ -81,6 +81,8 @@ dependencies {
     api "${rootProject.ext.smartRefreshLayout.f_classics}"
     // TBS WebView
     api "${rootProject.ext.tbsWebView.version}"
+    // loadingLayout（暂不支持ConstraintLayout）
+    api "${rootProject.ext.loadingLayout.version}"
 }
 
 // 声明aar包的版本号

@@ -1,6 +1,7 @@
 package com.lee0000.WanKotlin
 
 import android.app.Application
+import com.lxj.statelayout.StateLayoutConfig
 import com.tencent.smtt.sdk.QbSdk
 import com.umeng.commonsdk.UMConfigure
 import com.tencent.smtt.export.external.TbsCoreSettings
@@ -19,6 +20,7 @@ class WanApp: Application() {
 
         initStatistics()
         initTbsWebView()
+        initStateLayout()
     }
 
     private fun initStatistics(){
@@ -42,5 +44,9 @@ class WanApp: Application() {
             }
 
         })
+    }
+
+    private fun  initStateLayout(){
+//        StateLayoutConfig.init(loadingLayoutId = R.layout.wan_loading)
     }
 }

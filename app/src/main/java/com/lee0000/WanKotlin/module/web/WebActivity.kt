@@ -5,6 +5,7 @@ import android.os.Build
 import com.lee0000.WanKotlin.R
 import com.lee0000.WanKotlin.module.base.BaseActivity
 import com.lee0000.WanKotlin.util.IntentUtil
+import com.lxj.statelayout.StateLayout
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.sdk.*
 import kotlinx.android.synthetic.main.wan_activity_web.*
@@ -15,6 +16,7 @@ date:   2022/4/13
  */
 class WebActivity: BaseActivity() {
 
+    private lateinit var stateLayout: StateLayout
     private lateinit var webView: WebView
     private lateinit var webSetting: WebSettings
 
@@ -26,10 +28,31 @@ class WebActivity: BaseActivity() {
         val paramBundle = intent.getBundleExtra(IntentUtil.PARAM_BUNDLE)
         val url = paramBundle?.getString("url")
 
+        stateLayout = StateLayout(this).wrap(webViewFl)
+
+        iv_back.setOnClickListener {
+            finish()
+        }
+
         webView = WebView(this.applicationContext)
         webViewFl.addView(webView)
 
+        webViewSettings()
+
+        webView.webViewClient = WanWebViewClient(stateLayout)
+        webView.webChromeClient = WanWebChromeClient()
+
+        webView.loadUrl(url)
+    }
+
+    override fun initData() {
+
+    }
+
+    private fun webViewSettings(){
         webSetting = webView.settings
+        // 支持javaScript
+        webSetting.javaScriptEnabled = true
         // 支持屏幕缩放
         webSetting.setSupportZoom(true)
         // 设置内置的缩放控件。若为false，则该WebView不可缩放
@@ -51,15 +74,6 @@ class WebActivity: BaseActivity() {
         webSetting.blockNetworkImage = false
         // 支持自动加载图片
         webSetting.loadsImagesAutomatically = true
-
-        webView.webViewClient = WanWebViewClient()
-        webView.webChromeClient = WanWebChromeClient()
-
-        webView.loadUrl(url)
-    }
-
-    override fun initData() {
-
     }
 
     override fun onResume() {
@@ -95,7 +109,7 @@ class WebActivity: BaseActivity() {
         super.onDestroy()
     }
 
-    private class WanWebViewClient: WebViewClient() {
+    private class WanWebViewClient(private val stateLayout: StateLayout) : WebViewClient() {
 
         override fun shouldOverrideUrlLoading(p0: WebView?, p1: String?): Boolean {
             return super.shouldOverrideUrlLoading(p0, p1)
@@ -103,6 +117,8 @@ class WebActivity: BaseActivity() {
 
         override fun onPageStarted(p0: WebView?, p1: String?, p2: Bitmap?) {
             super.onPageStarted(p0, p1, p2)
+
+            stateLayout.showLoading()
         }
 
         override fun shouldOverrideUrlLoading(p0: WebView?, p1: WebResourceRequest?): Boolean {
@@ -111,6 +127,8 @@ class WebActivity: BaseActivity() {
 
         override fun onPageFinished(p0: WebView?, p1: String?) {
             super.onPageFinished(p0, p1)
+
+            stateLayout.showContent()
         }
     }
 

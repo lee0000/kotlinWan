@@ -3,6 +3,7 @@ package com.lee0000.WanKotlin.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.lee0000.WanKotlin.model.pub.PublicListModel
 import com.lee0000.WanKotlin.model.pub.PublicTitleModel
 import com.lee0000.WanKotlin.net.repository.PublicRepository
@@ -19,6 +20,8 @@ date:   2022/4/5
 class PublicVM : BaseViewModel() {
 
     private val repository by lazy { PublicRepository() }
+
+    val entities = arrayListOf<PublicListModel.DataX>()
 
     private val _ptmUIState = MutableLiveData<UiStateModel<PublicTitleModel>>()
     val ptmUIState: LiveData<UiStateModel<PublicTitleModel>> = _ptmUIState
@@ -46,21 +49,24 @@ class PublicVM : BaseViewModel() {
         }
     }
 
-    fun requestWxArticleList(){
+    fun requestWxArticleList(cid: Int){
 
-//        viewModelScope.launch(Dispatchers.Default) {
-//
-//            val result = repository.fetchWxArticleList()
-//            withContext(Dispatchers.Main){
-//                if (result == null) {
-//                    emitUiState(false, null, null, false, false)
-//                } else {
-//                    emitUiState(false, null, result, false, false)
-//                }
-//
-//                emitUiState(false, null, null, true, false)
-//
-//            }
-//        }
+        viewModelScope.launch(Dispatchers.Default) {
+
+            val result = repository.fetchWxArticleList(cid, 0)
+            withContext(Dispatchers.Main){
+                if (result == null) {
+                    emitUiState(_plmUIState, false, null, null, false, false)
+                } else {
+
+                    entities.clear()
+                    entities.addAll(result.data.datas)
+                    emitUiState(_plmUIState, false, null, result, false, false)
+                }
+
+                emitUiState(_plmUIState, false, null,null, true, false)
+
+            }
+        }
     }
 }
