@@ -15,6 +15,7 @@ import com.lee0000.WanKotlin.module.web.WebActivity
 import com.lee0000.WanKotlin.util.IntentUtil
 import com.lee0000.WanKotlin.viewModel.HomeVM
 import com.lee0000.WanKotlin.widget.itemDecoration.SimpleDividerItemDecoration
+import com.lxj.statelayout.StateLayout
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.youth.banner.Banner
@@ -75,6 +76,11 @@ class HomeFragment: BaseFragment() {
         homeVM.getArticleList(HomeVM.ArticleType.HomeAll, true)
         homeVM.halUIState.observe(viewLifecycleOwner){
 
+            if (it.showLoading){
+
+                stateLayout?.showLoading()
+            }
+
             if (it.showSuccess != null){
 
                 if (it.isRefresh){
@@ -85,6 +91,7 @@ class HomeFragment: BaseFragment() {
                     refreshLayout.finishLoadMore()
                 }
 
+                stateLayout?.showContent()
                 homeAdapter?.notifyDataSetChanged()
             }
         }

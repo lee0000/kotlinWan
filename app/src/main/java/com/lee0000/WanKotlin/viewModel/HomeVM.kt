@@ -105,6 +105,8 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
 
     private fun getHomeAll(isRefresh: Boolean){
 
+        emitUiStateByLiveData(_halUIState,true, null, null, false, false)
+
         viewModelScope.launch {
 
             if (isRefresh){
@@ -122,7 +124,7 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
                 val nextHomeList = getHomeList(isRefresh).await()
                 homeAllModel?.normalList!!.addAll(nextHomeList.data.datas)
             }
-            emitUiState(_halUIState, false, null, homeAllModel, false, isRefresh)
+            emitUiStateByLiveData(_halUIState, false, null, homeAllModel, false, isRefresh)
         }
     }
 
@@ -130,14 +132,14 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
 
         viewModelScope.launch {
             val systemTitleModel = homeRepository.fetchSystemTitle()
-            emitUiState(_hstUIState, false, null, systemTitleModel, false, false)
+            emitUiStateByLiveData(_hstUIState, false, null, systemTitleModel, false, false)
         }
     }
 
     private fun getSystemList(cid: Int){
         viewModelScope.launch {
             val systemListModel = homeRepository.fetchSystemList(cid, 0)
-            emitUiState(_hslUIState, false, null, systemListModel, false, false)
+            emitUiStateByLiveData(_hslUIState, false, null, systemListModel, false, false)
         }
     }
 
@@ -145,7 +147,7 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
 
         viewModelScope.launch {
             val naviListModel = homeRepository.fetchNaviList()
-            emitUiState(_hnlUIState, false, null, naviListModel, false, false)
+            emitUiStateByLiveData(_hnlUIState, false, null, naviListModel, false, false)
         }
     }
 }

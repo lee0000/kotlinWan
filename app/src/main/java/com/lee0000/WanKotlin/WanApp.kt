@@ -47,6 +47,6 @@ class WanApp: Application() {
     }
 
     private fun  initStateLayout(){
-//        StateLayoutConfig.init(loadingLayoutId = R.layout.wan_loading)
+        StateLayoutConfig.init(useContentBgWhenLoading = true)
     }
 }

@@ -83,6 +83,8 @@ dependencies {
     api "${rootProject.ext.tbsWebView.version}"
     // loadingLayout（暂不支持ConstraintLayout）
     api "${rootProject.ext.loadingLayout.version}"
+    // lifecycle
+    api "${rootProject.ext.lifecycle.version}"
 }
 
 // 声明aar包的版本号

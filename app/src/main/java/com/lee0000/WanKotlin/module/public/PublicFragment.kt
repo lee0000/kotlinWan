@@ -5,10 +5,13 @@ import com.lee0000.WanKotlin.R
 import com.lee0000.WanKotlin.module.base.BaseFragment
 import com.lee0000.WanKotlin.viewModel.PublicVM
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.lee0000.WanKotlin.model.pub.PublicTitleModel
 import kotlinx.android.synthetic.main.wan_fragment_main.*
+import kotlinx.coroutines.launch
 
 /**
 author: Lee
@@ -16,7 +19,6 @@ date:   2022/3/31
  */
 class PublicFragment : BaseFragment() {
 
-    private val titleList = arrayListOf<PublicTitleModel.Data>()
     private val publicVM by viewModels<PublicVM>()
 
     override fun getLayoutResId(): Int {
@@ -29,17 +31,17 @@ class PublicFragment : BaseFragment() {
         viewPager.offscreenPageLimit = 1
         viewPager.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int {
-                return titleList.size
+                return publicVM.titleEntities.size
             }
 
             override fun createFragment(position: Int): Fragment {
 
-                val partId = titleList[position].id
+                val partId = publicVM.titleEntities[position].id
                 return PublicSubFragment(partId)
             }
         }
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = titleList[position].name
+            tab.text = publicVM.titleEntities[position].name
         }.attach()
     }
 
@@ -47,22 +49,27 @@ class PublicFragment : BaseFragment() {
 
         // title
         publicVM.requestWxArticle()
-        publicVM.ptmUIState.observe(viewLifecycleOwner) {
-            if (it.isRefresh) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                publicVM.ptmUIState.collect{
 
-            }
+                    if (it.isRefresh) {
 
-            if (it.showLoading) {
+                    }
 
-            }
+                    if (it.showLoading) {
 
-            if (it.showSuccess != null) {
-                it.showSuccess.data.map { titleModelData ->
-                    titleList.add(titleModelData)
+                        publicVM.titleEntities.clear()
+                    }
+
+                    if (it.showSuccess != null) {
+                        it.showSuccess.data.map { titleModelData ->
+                            publicVM.titleEntities.add(titleModelData)
+                        }
+                        viewPager.adapter?.notifyDataSetChanged()
+                    }
                 }
-                viewPager.adapter?.notifyDataSetChanged()
             }
-
         }
     }
 }

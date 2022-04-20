@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.lxj.statelayout.StateLayout
 
 /**
 author: Lee
@@ -14,8 +15,18 @@ date:   2022/3/31
  */
 abstract class BaseFragment: Fragment() {
 
+    private var fragmentView: View? = null
+    // 加载的loading layout
+    protected var stateLayout: StateLayout? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(getLayoutResId(), container, false)
+
+        if (fragmentView == null){
+            fragmentView = inflater.inflate(getLayoutResId(), container, false)
+            stateLayout = StateLayout(requireContext()).wrap(fragmentView).showContent()
+        }
+
+        return stateLayout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
