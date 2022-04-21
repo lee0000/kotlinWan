@@ -1,5 +1,6 @@
 package com.lee0000.WanKotlin.viewModel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.lee0000.WanKotlin.model.pub.PublicListModel
 import com.lee0000.WanKotlin.model.pub.PublicTitleModel
@@ -28,6 +29,9 @@ class PublicVM : BaseViewModel() {
     private val _plmUIState = MutableStateFlow<UiStateModel<PublicListModel>>(UiStateModel(false, null, null, false, false))
     val plmUIState: StateFlow<UiStateModel<PublicListModel>> = _plmUIState.asStateFlow()
 
+    // 页面page, 公众号文章都是从index 1开始
+    private var page = 1
+
     fun requestWxArticle() {
 
         viewModelScope.launch(Dispatchers.Default) {
@@ -46,21 +50,33 @@ class PublicVM : BaseViewModel() {
         }
     }
 
-    fun requestWxArticleList(cid: Int){
-
-        emitUiStateByFlow(_plmUIState,true, null, null, false, false)
+    fun requestWxArticleList(refresh: Boolean, cid: Int){
 
         viewModelScope.launch(Dispatchers.Default) {
 
-            val result = repository.fetchWxArticleList(cid, 0)
+            if (refresh){
+                page = 0
+                emitUiStateByFlow(_plmUIState,true, null, null, false, false)
+            }else{
+                page++
+                emitUiStateByFlow(_plmUIState,false, null, null, false, false)
+            }
+
+            val result = repository.fetchWxArticleList(cid, page)
             withContext(Dispatchers.Main){
                 if (result == null) {
-                    emitUiStateByFlow(_plmUIState, false, null, null, false, false)
+                    emitUiStateByFlow(_plmUIState, false, null, null, true, false)
                 } else {
 
-                    entities.clear()
-                    entities.addAll(result.data.datas)
-                    emitUiStateByFlow(_plmUIState, false, null, result, false, false)
+                    if (refresh){// 刷新
+                        entities.clear()
+                        entities.addAll(result.data.datas)
+
+                        emitUiStateByFlow(_plmUIState, false, null, result, false, true)
+                    }else{
+                        entities.addAll(result.data.datas)
+                        emitUiStateByFlow(_plmUIState, false, null, result, false, false)
+                    }
                 }
 
                 emitUiStateByFlow(_plmUIState, false, null,null, true, false)

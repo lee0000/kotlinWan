@@ -53,10 +53,6 @@ class PublicFragment : BaseFragment() {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 publicVM.ptmUIState.collect{
 
-                    if (it.isRefresh) {
-
-                    }
-
                     if (it.showLoading) {
 
                         publicVM.titleEntities.clear()
