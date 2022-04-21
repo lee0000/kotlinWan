@@ -76,4 +76,8 @@ ext {
     loadingLayout = [
             version: "com.github.li-xiaojun:StateLayout:1.3.2"
     ]
+
+    flowLayout = [
+            version: "com.nex3z:flow-layout:1.3.4-beta01"
+    ]
 }

@@ -85,6 +85,8 @@ dependencies {
     api "${rootProject.ext.loadingLayout.version}"
     // lifecycle
     api "${rootProject.ext.lifecycle.version}"
+    // flowLayout
+    api "${rootProject.ext.flowLayout.version}"
 }
 
 // 声明aar包的版本号
