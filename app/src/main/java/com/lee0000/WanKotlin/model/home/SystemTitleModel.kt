@@ -24,7 +24,9 @@ data class SystemTitleModel(
         val parentChapterId: Int,
         val userControlSetTop: Boolean,
         val visible: Int
-    )
+    ){
+        var subTitle: String = ""
+    }
 
     data class Children(
         val author: String,

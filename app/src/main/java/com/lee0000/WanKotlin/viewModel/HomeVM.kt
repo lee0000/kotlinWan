@@ -3,6 +3,7 @@ package com.lee0000.WanKotlin.viewModel
 import androidx.lifecycle.*
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.lee0000.WanKotlin.model.home.*
+import com.lee0000.WanKotlin.model.pub.PublicTitleModel
 import com.lee0000.WanKotlin.net.repository.HomeRepository
 import kotlinx.coroutines.*
 
@@ -14,7 +15,10 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
 
     private var homeAllModel: HomeAllModel? = null
 
+    // 首页数据列表
     val entities = arrayListOf<MultiItemEntity>()
+    // 首页体系数据列表
+    val sysEntities = arrayListOf<SystemTitleModel.Data>()
 
     // 首页
     private val _halUIState = MutableLiveData<UiStateModel<HomeAllModel>>()
@@ -132,6 +136,20 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
 
         viewModelScope.launch {
             val systemTitleModel = homeRepository.fetchSystemTitle()
+            sysEntities.clear()
+            sysEntities.addAll(systemTitleModel.data)
+
+            for (index in systemTitleModel.data.indices){
+
+                val data = systemTitleModel.data[index]
+                val subTitleBuffer = StringBuffer()
+                data.children.map { child ->
+                    subTitleBuffer.append(child.name)
+                    subTitleBuffer.append("     ")
+                }
+                data.subTitle = subTitleBuffer.toString()
+            }
+
             emitUiStateByLiveData(_hstUIState, false, null, systemTitleModel, false, false)
         }
     }
