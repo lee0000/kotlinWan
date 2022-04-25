@@ -13,13 +13,13 @@ abstract class BaseActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(getLayoutResId())
-        initView()
+        initView(savedInstanceState)
         initData()
     }
 
     abstract fun getLayoutResId(): Int
     // 布局初始化
-    abstract fun initView()
+    abstract fun initView(savedInstanceState: Bundle?)
     // 数据初始化
     abstract fun initData()
 }

@@ -1,6 +1,5 @@
 package com.lee0000.WanKotlin.viewModel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.lee0000.WanKotlin.model.pub.PublicListModel
 import com.lee0000.WanKotlin.model.pub.PublicTitleModel
@@ -36,6 +35,7 @@ class PublicVM : BaseViewModel() {
 
         viewModelScope.launch(Dispatchers.Default) {
 
+            emitUiStateByFlow(_ptmUIState, true, null, null, false, false)
             val result = repository.fetchWxArticleTitle()
             withContext(Dispatchers.Main){
                 if (result == null) {
@@ -43,9 +43,6 @@ class PublicVM : BaseViewModel() {
                 } else {
                     emitUiStateByFlow(_ptmUIState,false, null, result, false, false)
                 }
-
-                emitUiStateByFlow(_ptmUIState, false, null, null, true, false)
-
             }
         }
     }
@@ -54,12 +51,12 @@ class PublicVM : BaseViewModel() {
 
         viewModelScope.launch(Dispatchers.Default) {
 
+            emitUiStateByFlow(_plmUIState, true, null, null, true, false)
+
             if (refresh){
-                page = 0
-                emitUiStateByFlow(_plmUIState,true, null, null, false, false)
+                page = 1
             }else{
                 page++
-                emitUiStateByFlow(_plmUIState,false, null, null, false, false)
             }
 
             val result = repository.fetchWxArticleList(cid, page)
@@ -78,8 +75,6 @@ class PublicVM : BaseViewModel() {
                         emitUiStateByFlow(_plmUIState, false, null, result, false, false)
                     }
                 }
-
-                emitUiStateByFlow(_plmUIState, false, null,null, true, false)
             }
         }
     }

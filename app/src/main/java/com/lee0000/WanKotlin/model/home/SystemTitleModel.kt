@@ -1,5 +1,7 @@
 package com.lee0000.WanKotlin.model.home
 
+import java.io.Serializable
+
 /**
 author: Lee
 date:   2022/4/2
@@ -24,7 +26,7 @@ data class SystemTitleModel(
         val parentChapterId: Int,
         val userControlSetTop: Boolean,
         val visible: Int
-    ){
+    ): Serializable {
         var subTitle: String = ""
     }
 
@@ -42,5 +44,5 @@ data class SystemTitleModel(
         val parentChapterId: Int,
         val userControlSetTop: Boolean,
         val visible: Int
-    )
+    ): Serializable
 }

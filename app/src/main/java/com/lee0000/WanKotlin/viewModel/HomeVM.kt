@@ -3,7 +3,6 @@ package com.lee0000.WanKotlin.viewModel
 import androidx.lifecycle.*
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.lee0000.WanKotlin.model.home.*
-import com.lee0000.WanKotlin.model.pub.PublicTitleModel
 import com.lee0000.WanKotlin.net.repository.HomeRepository
 import kotlinx.coroutines.*
 
@@ -19,6 +18,10 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
     val entities = arrayListOf<MultiItemEntity>()
     // 首页体系数据列表
     val sysEntities = arrayListOf<SystemTitleModel.Data>()
+    // 首页导航数据列表
+    val naviEntities = LinkedHashMap<String, List<NaviListModel.Article>>()
+    // 首页体系下列表数据列表
+    val sysSubEntities = arrayListOf<SystemListModel.DataX>()
 
     // 首页
     private val _halUIState = MutableLiveData<UiStateModel<HomeAllModel>>()
@@ -33,11 +36,13 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
     val hslUIState: LiveData<UiStateModel<SystemListModel>> = _hslUIState
 
     // 首页-导航
-    private val _hnlUIState = MutableLiveData<UiStateModel<NaviListModel>>()
-    val hnlUIState: LiveData<UiStateModel<NaviListModel>> = _hnlUIState
+    private val _hnlUIState = MutableLiveData<UiStateModel<LinkedHashMap<String, List<NaviListModel.Article>>>>()
+    val hnlUIState: LiveData<UiStateModel<LinkedHashMap<String, List<NaviListModel.Article>>>> = _hnlUIState
 
     // 首页列表page
     var homeListCurPage: Int = 0
+    // 体系列表page
+    var sysSubListCurPage: Int = 0
 
     private val homeRepository = HomeRepository()
 
@@ -72,7 +77,7 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
                 getSystemTitle()
             }
             ArticleType.SystemList -> {
-                getSystemList(cid)
+                getSystemList(isRefresh, cid)
             }
             ArticleType.NavigationList -> {
                 getNavigationList()
@@ -109,7 +114,7 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
 
     private fun getHomeAll(isRefresh: Boolean){
 
-        emitUiStateByLiveData(_halUIState,true, null, null, false, false)
+        emitUiStateByLiveData(_halUIState,null, null, false, false)
 
         viewModelScope.launch {
 
@@ -128,7 +133,7 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
                 val nextHomeList = getHomeList(isRefresh).await()
                 homeAllModel?.normalList!!.addAll(nextHomeList.data.datas)
             }
-            emitUiStateByLiveData(_halUIState, false, null, homeAllModel, false, isRefresh)
+            emitUiStateByLiveData(_halUIState, null, homeAllModel, false, isRefresh)
         }
     }
 
@@ -150,14 +155,35 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
                 data.subTitle = subTitleBuffer.toString()
             }
 
-            emitUiStateByLiveData(_hstUIState, false, null, systemTitleModel, false, false)
+            emitUiStateByLiveData(_hstUIState, null, systemTitleModel, false, false)
         }
     }
 
-    private fun getSystemList(cid: Int){
+    private fun getSystemList(refresh: Boolean, cid: Int){
+
         viewModelScope.launch {
-            val systemListModel = homeRepository.fetchSystemList(cid, 0)
-            emitUiStateByLiveData(_hslUIState, false, null, systemListModel, false, false)
+
+            if (refresh){
+                sysSubListCurPage = 0
+            }else{
+                sysSubListCurPage++
+            }
+
+            val result = homeRepository.fetchSystemList(cid, sysSubListCurPage)
+            if (result == null) {
+                emitUiStateByLiveData(_hslUIState, null, null, true, false)
+            } else {
+
+                if (refresh){// 刷新
+                    sysSubEntities.clear()
+                    sysSubEntities.addAll(result.data.datas)
+
+                    emitUiStateByLiveData(_hslUIState, null, result, false, true)
+                }else{
+                    sysSubEntities.addAll(result.data.datas)
+                    emitUiStateByLiveData(_hslUIState, null, result, false, false)
+                }
+            }
         }
     }
 
@@ -165,7 +191,14 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
 
         viewModelScope.launch {
             val naviListModel = homeRepository.fetchNaviList()
-            emitUiStateByLiveData(_hnlUIState, false, null, naviListModel, false, false)
+
+            naviListModel.data.map {
+                if (it.articles.isNotEmpty()){
+                    naviEntities[it.name] = it.articles
+                }
+            }
+
+            emitUiStateByLiveData(_hnlUIState, null, naviEntities, false, false)
         }
     }
 }

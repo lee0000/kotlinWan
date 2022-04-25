@@ -2,7 +2,9 @@ package com.lee0000.WanKotlin.module.web
 
 import android.graphics.Bitmap
 import android.os.Build
+import android.os.Bundle
 import com.lee0000.WanKotlin.R
+import com.lee0000.WanKotlin.URL
 import com.lee0000.WanKotlin.module.base.BaseActivity
 import com.lee0000.WanKotlin.util.IntentUtil
 import com.lxj.statelayout.StateLayout
@@ -20,13 +22,21 @@ class WebActivity: BaseActivity() {
     private lateinit var webView: WebView
     private lateinit var webSetting: WebSettings
 
+    private var url = ""
+
     override fun getLayoutResId(): Int {
         return R.layout.wan_activity_web
     }
 
-    override fun initView() {
-        val paramBundle = intent.getBundleExtra(IntentUtil.PARAM_BUNDLE)
-        val url = paramBundle?.getString("url")
+    override fun initView(savedInstanceState: Bundle?) {
+
+        // 判断是否从缓存中恢复数据
+        url = if (savedInstanceState != null){
+            savedInstanceState.getString(URL).toString()
+        }else{
+            val paramBundle = intent.getBundleExtra(IntentUtil.PARAM_BUNDLE)
+            paramBundle?.getString(URL).toString()
+        }
 
         stateLayout = StateLayout(this).wrap(webViewFl)
 
@@ -45,14 +55,17 @@ class WebActivity: BaseActivity() {
         webView.loadUrl(url)
     }
 
-    override fun initData() {
-
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(URL, url)
     }
+
+    override fun initData() {}
 
     private fun webViewSettings(){
         webSetting = webView.settings
         // 支持javaScript
-        webSetting.javaScriptEnabled = true
+        webSetting.javaScriptCanOpenWindowsAutomatically = true
         // 支持屏幕缩放
         webSetting.setSupportZoom(true)
         // 设置内置的缩放控件。若为false，则该WebView不可缩放

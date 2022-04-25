@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.lee0000.WanKotlin.R
+import com.lee0000.WanKotlin.URL
 import com.lee0000.WanKotlin.model.home.HomeBannerModel
 import com.lee0000.WanKotlin.model.home.HomeListModel
 import com.lee0000.WanKotlin.model.home.HomeTopListModel
@@ -73,25 +74,21 @@ class HomeFragment: BaseFragment() {
 
     override fun initData() {
 
+        stateLayout?.showLoading()
         homeVM.getArticleList(HomeVM.ArticleType.HomeAll, true)
         homeVM.halUIState.observe(viewLifecycleOwner){
-
-            if (it.showLoading){
-
-                stateLayout?.showLoading()
-            }
 
             if (it.showSuccess != null){
 
                 if (it.isRefresh){
                     banner?.setAdapter(HomeBannerAdapter(it.showSuccess.banner.data))
 
+                    stateLayout?.showContent()
                     refreshLayout.finishRefresh()
                 }else{
                     refreshLayout.finishLoadMore()
                 }
 
-                stateLayout?.showContent()
                 homeAdapter?.notifyDataSetChanged()
             }
         }
@@ -118,7 +115,7 @@ class HomeFragment: BaseFragment() {
             }
 
             val bundle = Bundle()
-            bundle.putString("url", linkUrl)
+            bundle.putString(URL, linkUrl)
             IntentUtil.navigate(requireContext(), WebActivity::class.java, bundle)
         }
     }

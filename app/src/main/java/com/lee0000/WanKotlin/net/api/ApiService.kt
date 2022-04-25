@@ -7,6 +7,7 @@ import com.lee0000.WanKotlin.model.pub.PublicListModel
 import com.lee0000.WanKotlin.model.pub.PublicTitleModel
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
 author: Lee
@@ -52,6 +53,7 @@ interface ApiService {
     @GET("tree/json")
     suspend fun getSystem(): SystemTitleModel
 
-    @GET("article/list/{page}/json?cid={cid}")
-    suspend fun getSystemList(@Path("cid") cid: Int, @Path("page") page: Int): SystemListModel
+    @GET("article/list/{page}/json")
+    suspend fun getSystemList(@Path("page") page: Int, @Query("cid") cid: Int): SystemListModel
+
 }

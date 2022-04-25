@@ -2,7 +2,6 @@ package com.lee0000.WanKotlin.net.repository
 
 import com.lee0000.WanKotlin.model.home.*
 import com.lee0000.WanKotlin.net.api.RetrofitClient
-import com.lee0000.WanKotlin.viewModel.HomeVM
 
 /**
 author: Lee
@@ -31,7 +30,7 @@ class HomeRepository {
     }
 
     suspend fun fetchSystemList(cid: Int, page: Int): SystemListModel {
-        return mService.getSystemList(cid, page)
+        return mService.getSystemList(page, cid)
     }
 
     suspend fun fetchNaviList(): NaviListModel {

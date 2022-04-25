@@ -1,5 +1,6 @@
 package com.lee0000.WanKotlin.module
 
+import android.os.Bundle
 import android.view.Gravity
 import androidx.navigation.*
 import com.blankj.utilcode.util.ToastUtils
@@ -23,7 +24,7 @@ class MainActivity: BaseActivity() {
         return R.layout.wan_activity_main
     }
 
-    override fun initView() {
+    override fun initView(savedInstanceState: Bundle?) {
 
         iv_menu.setOnClickListener {
             drawer_layout.openDrawer(Gravity.LEFT)

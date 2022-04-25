@@ -5,12 +5,15 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.lee0000.WanKotlin.R
+import com.lee0000.WanKotlin.SUB_PUBLIC_MODEL
 import com.lee0000.WanKotlin.module.base.BaseFragment
+import com.lee0000.WanKotlin.util.IntentUtil
 import com.lee0000.WanKotlin.viewModel.HomeVM
 import com.lee0000.WanKotlin.widget.itemDecoration.SimpleDividerItemDecoration
 import com.scwang.smart.refresh.header.ClassicsHeader
 import kotlinx.android.synthetic.main.wan_fragment_home.recyclerView
 import kotlinx.android.synthetic.main.wan_fragment_home.refreshLayout
+import java.io.Serializable
 
 /**
 author: Lee
@@ -43,10 +46,13 @@ class SystemFragment: BaseFragment() {
 
     override fun initData() {
 
+        stateLayout?.showLoading()
         homeVM.getArticleList(HomeVM.ArticleType.SystemTitle)
         homeVM.hstUIState.observe(viewLifecycleOwner){
 
             systemAdapter?.notifyDataSetChanged()
+
+            stateLayout?.showContent()
             refreshLayout.finishRefresh()
         }
     }
@@ -55,12 +61,11 @@ class SystemFragment: BaseFragment() {
 
         return OnItemClickListener { adapter, view, position ->
 
-//            val clickItem = publicSubAdapter?.data?.get(position)
-//            var linkUrl = clickItem?.link
-//
-//            val bundle = Bundle()
-//            bundle.putString("url", linkUrl)
-//            IntentUtil.navigate(requireContext(), WebActivity::class.java, bundle)
+            val clickItem = systemAdapter?.data?.get(position)
+
+            val bundle = Bundle()
+            bundle.putSerializable(SUB_PUBLIC_MODEL, clickItem as Serializable)
+            IntentUtil.navigate(requireContext(), SystemDetailActivity::class.java, bundle)
         }
     }
 

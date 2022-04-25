@@ -47,6 +47,6 @@ class WanApp: Application() {
     }
 
     private fun  initStateLayout(){
-        StateLayoutConfig.init(useContentBgWhenLoading = false)
+        StateLayoutConfig.init(useContentBgWhenLoading = true)
     }
 }

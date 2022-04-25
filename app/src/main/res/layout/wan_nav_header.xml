@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@{homeViewModel.user.nickname ?? homeViewModel.defaultName}"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="16sp" />
         <!--标签-->
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
             android:layout_marginTop="8dp"
-            android:text="@{homeViewModel.user.introduction ?? homeViewModel.defaultIntroduction}"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="14sp" />
     </RelativeLayout>

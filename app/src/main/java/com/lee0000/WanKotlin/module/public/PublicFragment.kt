@@ -53,11 +53,6 @@ class PublicFragment : BaseFragment() {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 publicVM.ptmUIState.collect{
 
-                    if (it.showLoading) {
-
-                        publicVM.titleEntities.clear()
-                    }
-
                     if (it.showSuccess != null) {
                         it.showSuccess.data.map { titleModelData ->
                             publicVM.titleEntities.add(titleModelData)

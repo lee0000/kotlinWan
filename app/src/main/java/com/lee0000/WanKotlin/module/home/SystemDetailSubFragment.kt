@@ -1,4 +1,4 @@
-package com.lee0000.WanKotlin.module.public
+package com.lee0000.WanKotlin.module.home
 
 import android.os.Bundle
 import androidx.fragment.app.viewModels
@@ -10,8 +10,10 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.lee0000.WanKotlin.R
 import com.lee0000.WanKotlin.URL
 import com.lee0000.WanKotlin.module.base.BaseFragment
+import com.lee0000.WanKotlin.module.public.PublicSubAdapter
 import com.lee0000.WanKotlin.module.web.WebActivity
 import com.lee0000.WanKotlin.util.IntentUtil
+import com.lee0000.WanKotlin.viewModel.HomeVM
 import com.lee0000.WanKotlin.viewModel.PublicVM
 import com.lee0000.WanKotlin.widget.itemDecoration.SimpleDividerItemDecoration
 import com.scwang.smart.refresh.footer.ClassicsFooter
@@ -21,13 +23,13 @@ import kotlinx.coroutines.launch
 
 /**
 author: Lee
-date:   2022/4/18
+date:   2022/4/24
  */
-class PublicSubFragment(private val partId: Int): BaseFragment() {
+class SystemDetailSubFragment(private val partId: Int): BaseFragment() {
 
-    private var publicSubAdapter: PublicSubAdapter? = null
+    private var sysSubAdapter: SysSubAdapter? = null
 
-    private val publicVM by viewModels<PublicVM>()
+    private val homeVM by viewModels<HomeVM>()
 
     override fun getLayoutResId(): Int {
         return R.layout.wan_fragment_home
@@ -35,12 +37,12 @@ class PublicSubFragment(private val partId: Int): BaseFragment() {
 
     override fun initView() {
 
-        publicSubAdapter = PublicSubAdapter(R.layout.wan_item_article, publicVM.entities)
+        sysSubAdapter = SysSubAdapter(R.layout.wan_item_article, homeVM.sysSubEntities)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.addItemDecoration(SimpleDividerItemDecoration(requireContext()))
-        recyclerView.adapter = publicSubAdapter
+        recyclerView.adapter = sysSubAdapter
 
-        publicSubAdapter?.setOnItemClickListener(onItemClick())
+        sysSubAdapter?.setOnItemClickListener(onItemClick())
 
         refreshLayout.setRefreshHeader(ClassicsHeader(requireContext()))
         refreshLayout.setRefreshFooter(ClassicsFooter(requireContext()))
@@ -55,10 +57,10 @@ class PublicSubFragment(private val partId: Int): BaseFragment() {
     override fun initData() {
 
         stateLayout?.showLoading()
-        publicVM.requestWxArticleList(true, partId)
+        homeVM.getArticleList(HomeVM.ArticleType.SystemList, true, partId)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                publicVM.plmUIState.collect{
+                homeVM.hslUIState.observe(viewLifecycleOwner){
 
                     if (it.showSuccess != null) {
 
@@ -70,7 +72,7 @@ class PublicSubFragment(private val partId: Int): BaseFragment() {
                             refreshLayout.finishLoadMore()
                         }
 
-                        publicSubAdapter?.notifyDataSetChanged()
+                        sysSubAdapter?.notifyDataSetChanged()
                     }
                 }
             }
@@ -81,7 +83,7 @@ class PublicSubFragment(private val partId: Int): BaseFragment() {
 
         return OnItemClickListener { adapter, view, position ->
 
-            val clickItem = publicSubAdapter?.data?.get(position)
+            val clickItem = sysSubAdapter?.data?.get(position)
             var linkUrl = clickItem?.link
 
             val bundle = Bundle()
@@ -91,10 +93,10 @@ class PublicSubFragment(private val partId: Int): BaseFragment() {
     }
 
     private fun refresh(){
-        publicVM.requestWxArticleList(true, partId)
+        homeVM.getArticleList(HomeVM.ArticleType.SystemList, true, partId)
     }
 
     private fun loadMore(){
-        publicVM.requestWxArticleList(false, partId)
+        homeVM.getArticleList(HomeVM.ArticleType.SystemList, false, partId)
     }
 }

@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".module.home.SystemDetailActivity"
+            android:exported="true"/>
+
         <activity android:name=".module.web.WebActivity"
             android:exported="true"/>
 

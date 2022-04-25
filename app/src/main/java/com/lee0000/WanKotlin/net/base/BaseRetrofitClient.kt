@@ -1,6 +1,7 @@
 package com.lee0000.WanKotlin.net.base
 
 import com.lee0000.WanKotlin.BuildConfig
+import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,12 +14,15 @@ date:   2022/4/5
  */
 abstract class BaseRetrofitClient {
 
-    private val TIME_OUT = 10
+    private val TIME_OUT = 30
 
     private val client: OkHttpClient by lazy {
         val builder = OkHttpClient.Builder()
             .addInterceptor(getHttpLoggingInterceptor())
             .connectTimeout(TIME_OUT.toLong(), TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+            .readTimeout(TIME_OUT.toLong(), TimeUnit.SECONDS)
+            .connectionPool(ConnectionPool(0, 1, TimeUnit.NANOSECONDS))
         handleBuilder(builder)
         builder.build()
     }

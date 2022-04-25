@@ -26,20 +26,5 @@
         app:flChildSpacingForLastRow="align"
         app:flRowSpacing="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/wan_article_text_color"
-            android:textSize="14dp"
-            android:text="SUN" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/wan_article_text_color"
-            android:textSize="14dp"
-            android:text="MON"/>
-
-
     </com.nex3z.flowlayout.FlowLayout>
 </LinearLayout>

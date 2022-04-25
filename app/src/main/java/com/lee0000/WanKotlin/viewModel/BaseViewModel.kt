@@ -12,31 +12,30 @@ abstract class BaseViewModel: ViewModel(){
 
     protected fun <T> emitUiStateByLiveData(
         stateUILiveData: MutableLiveData<UiStateModel<T>>,
-        showLoading: Boolean = false,
         showError: String? = null,
         showSuccess: T? = null,
         showEnd: Boolean = false,
         isRefresh: Boolean = false
     ) {
-        val uiModel = UiStateModel(showLoading, showError, showSuccess, showEnd, isRefresh)
+        val uiModel = UiStateModel(false, showError, showSuccess, showEnd, isRefresh)
         stateUILiveData.value = uiModel
     }
 
     protected fun <T> emitUiStateByFlow(
         stateUIFlow: MutableStateFlow<UiStateModel<T>>,
-        showLoading: Boolean = false,
+        isLoading: Boolean = false,
         showError: String? = null,
         showSuccess: T? = null,
         showEnd: Boolean = false,
         isRefresh: Boolean = false
     ) {
-        val uiModel = UiStateModel(showLoading, showError, showSuccess, showEnd, isRefresh)
+        val uiModel = UiStateModel(isLoading, showError, showSuccess, showEnd, isRefresh)
         stateUIFlow.tryEmit(uiModel)
     }
 }
 
 data class UiStateModel<T>(
-    val showLoading: Boolean,
+    val isLoading: Boolean,
     val showError: String?,
     val showSuccess: T?,
     val showEnd: Boolean, // 加载更多
