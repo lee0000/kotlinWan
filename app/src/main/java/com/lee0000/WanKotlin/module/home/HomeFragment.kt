@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.lee0000.WanKotlin.R
 import com.lee0000.WanKotlin.URL
@@ -90,6 +91,14 @@ class HomeFragment: BaseFragment() {
                 }
 
                 homeAdapter?.notifyDataSetChanged()
+            }
+
+            if (it.showError != null){
+                stateLayout?.showError()
+                stateLayout?.mRetryAction = {
+                    homeVM.getArticleList(HomeVM.ArticleType.HomeAll, true)
+                }
+                ToastUtils.showShort(it.showError)
             }
         }
     }

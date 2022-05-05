@@ -1,6 +1,7 @@
 package com.lee0000.WanKotlin.viewModel
 
 import androidx.lifecycle.*
+import com.blankj.utilcode.util.NetworkUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.lee0000.WanKotlin.model.home.*
 import com.lee0000.WanKotlin.net.repository.HomeRepository
@@ -59,6 +60,11 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
 
     fun getArticleList(articleType: ArticleType, isRefresh: Boolean = false, cid: Int = 0){
 
+        if (!NetworkUtils.isConnected()) {
+            emitUiStateByLiveData(_halUIState,"网络连接错误", null, false, false)
+            return
+        }
+
         when(articleType){
 
             ArticleType.HomeBanner -> {
@@ -71,6 +77,7 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
                 getHomeList(isRefresh)
             }
             ArticleType.HomeAll -> {
+
                 getHomeAll(isRefresh)
             }
             ArticleType.SystemTitle -> {
@@ -83,6 +90,7 @@ class HomeVM: BaseViewModel(), LifecycleObserver{
                 getNavigationList()
             }
         }
+
     }
 
     private fun getHomeBanner(): Deferred<HomeBannerModel> {

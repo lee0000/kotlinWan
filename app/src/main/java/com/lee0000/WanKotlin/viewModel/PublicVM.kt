@@ -1,6 +1,7 @@
 package com.lee0000.WanKotlin.viewModel
 
 import androidx.lifecycle.viewModelScope
+import com.blankj.utilcode.util.NetworkUtils
 import com.lee0000.WanKotlin.model.pub.PublicListModel
 import com.lee0000.WanKotlin.model.pub.PublicTitleModel
 import com.lee0000.WanKotlin.net.repository.PublicRepository
@@ -33,6 +34,8 @@ class PublicVM : BaseViewModel() {
 
     fun requestWxArticle() {
 
+        if (!NetworkUtils.isConnected()) return
+
         viewModelScope.launch(Dispatchers.Default) {
 
             emitUiStateByFlow(_ptmUIState, true, null, null, false, false)
@@ -48,6 +51,8 @@ class PublicVM : BaseViewModel() {
     }
 
     fun requestWxArticleList(refresh: Boolean, cid: Int){
+
+        if (!NetworkUtils.isConnected()) return
 
         viewModelScope.launch(Dispatchers.Default) {
 
